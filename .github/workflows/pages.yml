@@ -1,0 +1,32 @@
+name: Build and Deploy
+
+on:
+  push:
+    branches: [main] # Replace with your default branch
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Jekyll
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16' # Choose the appropriate Node.js version
+
+      - name: Install Dependencies
+        run: |
+          npm install -g jekyll bundler
+
+      - name: Build with Jekyll
+        run: |
+          bundle config set path vendor/bundle
+          bundle install
+          jekyll build
+
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy@v1
+        with:
+          repository_nwo: ${{ github.repository }} # e.g., username/repo-name
+          artifact_path: ./_site # Path to your built site
