@@ -21,6 +21,14 @@ jobs:
         with:
           ruby-version: 2.7
 
+      - name: Cache dependencies
+        uses: actions/cache@v2
+        with:
+          path: vendor/bundle
+          key: ${{ runner.os }}-ruby-${{ hashFiles('**/Gemfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-ruby-
+
       - name: Install dependencies
         run: |
           gem install jekyll bundler
